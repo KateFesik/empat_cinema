@@ -3,6 +3,7 @@ part of 'session_bloc.dart';
 @immutable
 class SessionState extends Equatable {
   final int sessionId;
+  final Session session;
   final List<Seat> seatsPrice;
   final List<Seat> selectedSeats;
   final double totalPrice;
@@ -12,6 +13,7 @@ class SessionState extends Equatable {
 
   const SessionState({
     required this.sessionId,
+    required this.session,
     required this.seatsPrice,
     required this.selectedSeats,
     required this.totalPrice,
@@ -22,6 +24,7 @@ class SessionState extends Equatable {
 
   SessionState copyWith({
     int? sessionId,
+    Session? session,
     List<Seat>? seatsPrice,
     List<Seat>? selectedSeats,
     double? totalPrice,
@@ -31,6 +34,7 @@ class SessionState extends Equatable {
   }) {
     return SessionState(
       sessionId: sessionId ?? this.sessionId,
+      session: session ?? this.session,
       seatsPrice: seatsPrice ?? this.seatsPrice,
       selectedSeats: selectedSeats ?? this.selectedSeats,
       totalPrice: totalPrice ?? this.totalPrice,
@@ -43,6 +47,7 @@ class SessionState extends Equatable {
   @override
   List<Object?> get props => [
         sessionId,
+        session,
         seatsPrice,
         selectedSeats,
         totalPrice,

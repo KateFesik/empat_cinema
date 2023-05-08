@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class InputField extends StatelessWidget {
+class PaymentField extends StatelessWidget {
   final String hint;
   final TextEditingController? controller;
-  final ValueChanged<String>? onSubmitted;
   final bool? enabled;
   final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final bool obscureText;
 
-  const InputField({
+  const PaymentField({
     Key? key,
     required this.hint,
     required this.controller,
-    this.onSubmitted,
     this.enabled,
     this.keyboardType,
+    this.inputFormatters,
+    this.obscureText = false,
   }) : super(key: key);
 
   @override
@@ -22,13 +25,16 @@ class InputField extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: TextField(
         controller: controller,
-        onSubmitted: onSubmitted,
+        textInputAction: TextInputAction.next,
+        onEditingComplete: () => FocusScope.of(context).nextFocus(),
         decoration: InputDecoration(
           labelText: hint,
           border: const OutlineInputBorder(),
         ),
         enabled: enabled,
         keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
+        obscureText: obscureText,
       ),
     );
   }

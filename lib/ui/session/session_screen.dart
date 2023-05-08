@@ -1,22 +1,25 @@
 import 'package:cinema/data/network/model/session.dart';
 import 'package:cinema/ui/common/cinema_button.dart';
+import 'package:cinema/ui/payment_screen/payment_screen.dart';
 import 'package:cinema/ui/session/widgets/cinema_hall_card.dart';
 import 'package:cinema/ui/session/widgets/cinema_seats.dart';
 import 'package:cinema/ui/session/widgets/legend.dart';
 import 'package:cinema/ui/session/widgets/session_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:lumberdash/lumberdash.dart';
 
 import '../../data/network/cinema_rest_client.dart';
+import '../../data/network/model/seat.dart';
 import '../common/loading_overlay.dart';
+import '../common/session_text_date.dart';
 import 'bloc/session_bloc.dart';
 
-const String buttonText = "book";
+const String _buttonText = "book";
 
 class SessionScreen extends StatelessWidget {
-  final Session session;
   final String movieName;
+  final Session session;
 
   const SessionScreen({
     Key? key,
@@ -24,13 +27,36 @@ class SessionScreen extends StatelessWidget {
     required this.movieName,
   }) : super(key: key);
 
+  void _openPaymentScreen(
+    BuildContext context,
+    List<Seat> selectedSeats,
+    String movieName,
+    double totalPrice,
+    Session session,
+  ) async {
+    List<int> seatIds = selectedSeats.map((e) => e.id).toList();
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return PaymentScreen(
+            seatIds: seatIds,
+            session: session,
+            movieName: movieName,
+            totalPrice: totalPrice,
+          );
+        },
+      ),
+    );
+    context.read<SessionBloc>().add(InitSession());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SessionBloc>(
       create: (context) => SessionBloc(
         context.read<CinemaRestClient>(),
-        session.id,
-      )..add(InitSession(rows: session.room.rows)),
+        session,
+      )..add(InitSession()),
       child: Scaffold(
         appBar: SessionAppBar(
           title: movieName,
@@ -47,7 +73,13 @@ class SessionScreen extends StatelessWidget {
             }
             if (state.booked) {
               context.read<SessionBloc>().add(OnNavigationHandledEvent());
-              // Navigator.push(context, route)
+              _openPaymentScreen(
+                context,
+                state.selectedSeats,
+                movieName,
+                state.totalPrice,
+                state.session,
+              );
             }
           },
           builder: (BuildContext context, SessionState state) {
@@ -55,13 +87,16 @@ class SessionScreen extends StatelessWidget {
               loading: state.loading,
               child: Column(
                 children: [
-                  SessionTextDate(session: session),
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: SessionTextDate(session: state.session),
+                  ),
                   Expanded(
                     child: CinemaHallCard(
                       totalPrice: state.totalPrice,
-                      roomName: session.room.name,
+                      roomName: state.session.room.name,
                       seatsWidget: CinemaSeats(
-                          seatRows: session.room.rows,
+                          seatRows: state.session.room.rows,
                           selectedSeats: state.selectedSeats,
                           onTap: (seat) {
                             context
@@ -74,10 +109,14 @@ class SessionScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0,),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10.0,
+                    ),
                     child: CinemaButton(
-                      title: buttonText,
-                      onTap: () {//todo
+                      isDisabled: (state.selectedSeats.isEmpty),
+
+                      title: _buttonText,
+                      onTap: () {
                         context.read<SessionBloc>().add(OnBookTickets());
                       },
                     ),
@@ -86,36 +125,6 @@ class SessionScreen extends StatelessWidget {
               ),
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class SessionTextDate extends StatelessWidget {
-  final Session session;
-
-  const SessionTextDate({
-    super.key,
-    required this.session,
-  });
-
-  String _convertDate(DateTime date) {
-    return "${DateFormat.EEEE().format(date)}, "
-        "${DateFormat('HH:mm').format(date)}";
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Text(
-          "${_convertDate(session.date)} - ${session.type}",
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
         ),
       ),
     );

@@ -8,6 +8,8 @@ import 'package:lumberdash/lumberdash.dart';
 import '../../session/session_screen.dart';
 import '../bloc/schedule_bloc.dart';
 
+const _noSessions = "no sessions";
+
 class DaySchedule extends StatelessWidget {
   final String movieName;
   final List<Session> sessions;
@@ -34,8 +36,6 @@ class DaySchedule extends StatelessWidget {
         },
       ),
     );
-    logMessage(">>>>> Init Schedule after Navigator push");
-    // ignore_for_file: use_build_context_synchronously
     context.read<ScheduleBloc>().add(InitSchedule(
           date: session.date,
         ));
@@ -53,19 +53,23 @@ class DaySchedule extends StatelessWidget {
         spacing: 12.0,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          ...sessions.map((entry) {
-            return ScheduleItem(
-              onItemTap: () {
-                _openSessionScreen(
-                  context,
-                  entry.id,
-                  sessions,
+          if (sessions.isEmpty) const Text(_noSessions),
+          if (sessions.isNotEmpty)
+            ...sessions.map(
+              (entry) {
+                return ScheduleItem(
+                  onItemTap: () {
+                    _openSessionScreen(
+                      context,
+                      entry.id,
+                      sessions,
+                    );
+                  },
+                  time: DateFormat('HH:mm').format(entry.date),
+                  type: entry.type,
                 );
               },
-              time: DateFormat('HH:mm').format(entry.date),
-              type: entry.type,
-            );
-          }).toList(),
+            ).toList()
         ],
       ),
     );

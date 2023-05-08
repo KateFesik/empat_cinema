@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lumberdash/lumberdash.dart';
 
 import 'widgets/day_movies_page.dart';
 
@@ -23,7 +24,7 @@ class _MoviesScreenState extends State<MoviesScreen>
   }
 
   DateTime _getData(int index) {
-    return DateTime.now().add(Duration(days: index));
+    return DateTime.now().add(Duration(days: index,hours: 3));
   }
 
   @override

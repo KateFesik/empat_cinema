@@ -6,7 +6,9 @@ import 'common/cinema_bottom_app_bar.dart';
 import 'movies/movies_screen.dart';
 
 class CinemaRoot extends StatefulWidget {
-const CinemaRoot({Key? key,}) : super(key: key);
+  const CinemaRoot({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CinemaRoot> createState() => CinemaRootState();
@@ -14,20 +16,30 @@ const CinemaRoot({Key? key,}) : super(key: key);
 
 final GlobalKey<CinemaRootState> rootKey = GlobalKey<CinemaRootState>();
 
-class CinemaRootState extends State<CinemaRoot> {
-  int index = 0;
+enum RootTab {
+  movies("Movies", Icons.movie),
+  tickets("Tickets", Icons.confirmation_num_outlined);
 
-  void setIndex(int index) {
+  final String name;
+  final IconData icon;
+
+  const RootTab(this.name, this.icon);
+}
+
+class CinemaRootState extends State<CinemaRoot> {
+  RootTab activeTab = RootTab.movies;
+
+  void setActiveTab(RootTab tab) {
     setState(() {
-      this.index = index;
+      activeTab = tab;
     });
   }
 
-  Widget getCurrentScreen(int index) {
-    switch (index) {
-      case 0:
+  Widget getCurrentScreen(RootTab rootTab) {
+    switch (rootTab) {
+      case RootTab.movies:
         return const MoviesScreen();
-      case 1:
+      case RootTab.tickets:
         return const TicketsScreen();
       default:
         return const MoviesScreen();
@@ -38,13 +50,11 @@ class CinemaRootState extends State<CinemaRoot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CinemaAppBar(),
-      body: getCurrentScreen(index),
+      body: getCurrentScreen(activeTab),
       bottomNavigationBar: CinemaBottomAppBar(
-        index: index,
-        onTap: (index) {
-          setState(() {
-            this.index = index;
-          });
+        tab: activeTab,
+        onTap: (tab) {
+          setActiveTab(tab);
         },
       ),
     );

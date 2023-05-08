@@ -1,17 +1,13 @@
+import 'package:cinema/ui/cinema_root.dart';
 import 'package:flutter/material.dart';
 
-const _menuItems = {
-  "Movies": Icons.movie,
-  "Tickets": Icons.confirmation_num_outlined,
-};
-
 class CinemaBottomAppBar extends StatelessWidget {
-  final int index;
-  final ValueChanged<int> onTap;
+  final RootTab tab;
+  final ValueChanged<RootTab> onTap;
 
   const CinemaBottomAppBar({
     Key? key,
-    required this.index,
+    required this.tab,
     required this.onTap,
   }) : super(key: key);
 
@@ -19,15 +15,17 @@ class CinemaBottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      currentIndex: index,
-      onTap: onTap,
+      currentIndex: tab.index,
+      onTap: (index) {
+        onTap(RootTab.values[index]);
+      },
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      items: _menuItems.entries
+      items: RootTab.values
           .map((entry) => BottomNavigationBarItem(
-        icon: Icon(entry.value),
-        label: entry.key,
-      ))
+                icon: Icon(entry.icon),
+                label: entry.name,
+              ))
           .toList(),
     );
   }

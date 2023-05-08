@@ -47,10 +47,13 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         event.date,
         movie.id,
       );
-      sessions.sort((a, b) => a.date.compareTo(b.date));
+      DateTime now = DateTime.now();
+      List<Session> upcomingSessions =
+          sessions.where((session) => session.date.isAfter(now)).toList();
+      upcomingSessions.sort((a, b) => a.date.compareTo(b.date));
       emit(state.copyWith(
         loading: false,
-        sessions: sessions,
+        sessions: upcomingSessions,
         selectedDate: event.date,
       ));
     } catch (e) {

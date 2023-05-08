@@ -66,7 +66,8 @@ class _AccountScreenState extends State<AccountScreen> {
                     InputField(
                       hint: "Name",
                       controller: nameController,
-                      onNameSubmitted: (value) {
+                      keyboardType: TextInputType.name,
+                      onSubmitted: (value) {
                         _onSave(context);
                       },
                     ),
@@ -74,6 +75,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       hint: "Phone number",
                       controller:
                           TextEditingController(text: state.phone ?? ''),
+                      keyboardType: TextInputType.phone,
                       enabled: false,
                     ),
                     CinemaButton(
@@ -81,6 +83,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         _onSave(context);
                       },
                       title: buttonText,
+                      isDisabled: true,
                     ),
                   ],
                 ),

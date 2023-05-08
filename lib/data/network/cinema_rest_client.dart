@@ -45,6 +45,23 @@ abstract class CinemaRestClient {
     int? movieId,
   );
 
+  Future<Session> searchSession(
+    int? sessionId,
+  );
+
   // reservation
-  Future<bool> reservation(int sessionId, List<int> seatIds);
+  Future<bool> reservation(
+    int sessionId,
+    List<int> seatIds,
+  );
+
+  //order
+  Future<bool> orderTickets(
+    int sessionId,
+    List<int> seatIds,
+      String email,
+      String cardNumber,
+      String expirationDate,
+      String cvv,
+  );
 }

@@ -136,7 +136,10 @@ class CinemaRestClientImpl extends CinemaRestClient {
   }
 
   @override
-  Future<List<Session>> searchSessions(DateTime? date, int? movieId,) async {
+  Future<List<Session>> searchSessions(
+    DateTime? date,
+    int? movieId,
+  ) async {
     final dioResponse = await dio.get<Map<String, dynamic>>(
       '/api/movies/sessions',
       queryParameters: {
@@ -152,6 +155,18 @@ class CinemaRestClientImpl extends CinemaRestClient {
   }
 
   @override
+  Future<Session> searchSession(int? sessionId) async {
+    final dioResponse = await dio.get<Map<String, dynamic>>(
+      '/api/movies/sessions/$sessionId',
+    );
+    if (dioResponse.success()) {
+      throw Exception("Request failed");
+    }
+    final dataJson = dioResponse.data!['data'];
+    return Session.fromJson(dataJson);
+  }
+
+  @override
   Future<bool> reservation(int sessionId, List<int> seatIds) async {
     final data = {
       "seats": seatIds,
@@ -159,6 +174,33 @@ class CinemaRestClientImpl extends CinemaRestClient {
     };
     final dioResponse = await dio.post<Map<String, dynamic>>(
       '/api/movies/book',
+      data: data,
+    );
+    if (dioResponse.success()) {
+      throw Exception("Request failed");
+    }
+    return dioResponse.data!['data'] as bool;
+  }
+
+  @override
+  Future<bool> orderTickets(
+    int sessionId,
+    List<int> seatIds,
+    String email,
+    String cardNumber,
+    String expirationDate,
+    String cvv,
+  ) async {
+    final data = {
+      "seats": seatIds,
+      "sessionId": sessionId,
+      "email": email,
+      "cardNumber": cardNumber,
+      "expirationDate": expirationDate,
+      "cvv": cvv,
+    };
+    final dioResponse = await dio.post<Map<String, dynamic>>(
+      "/api/movies/buy",
       data: data,
     );
     if (dioResponse.success()) {

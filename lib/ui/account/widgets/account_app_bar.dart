@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../cinema_root.dart';
 
 class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const AccountAppBar({Key? key,}) : super(key: key);
+  const AccountAppBar({
+    Key? key,
+  }) : super(key: key);
 
   final String _title = "Account";
 
@@ -25,7 +27,7 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           onPressed: () {
             Navigator.pop(context);
-            rootKey.currentState?.setIndex(1);
+            rootKey.currentState?.setActiveTab(RootTab.tickets);
           },
         ),
       ],

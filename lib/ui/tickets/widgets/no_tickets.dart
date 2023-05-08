@@ -29,7 +29,7 @@ class NoTickets extends StatelessWidget {
             width: 300.0,
             child: ElevatedButton(
               onPressed: () {
-                rootKey.currentState?.setIndex(0);
+                rootKey.currentState?.setActiveTab(RootTab.movies);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 14.0),

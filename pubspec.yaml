@@ -19,6 +19,7 @@ dependencies:
   json_annotation: ^4.8.0
   crypto: ^3.0.2
   equatable: ^2.0.0
+  mask_text_input_formatter: ^2.4.0
   # logger
   lumberdash: ^3.0.0
   print_lumberdash: ^3.0.0

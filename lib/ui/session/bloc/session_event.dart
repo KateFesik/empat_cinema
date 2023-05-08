@@ -4,16 +4,10 @@ part of 'session_bloc.dart';
 abstract class SessionEvent extends Equatable {}
 
 class InitSession extends SessionEvent {
-  final List<SeatRow> rows;
 
-  InitSession({
-    required this.rows,
-  });
 
   @override
-  List<Object?> get props => [
-        rows,
-      ];
+  List<Object?> get props => List.empty();
 }
 
 class OnSeatSelected extends SessionEvent {

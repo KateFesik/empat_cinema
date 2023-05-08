@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cinema/data/network/model/session.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,13 +17,14 @@ part 'session_state.dart';
 
 class SessionBloc extends Bloc<SessionEvent, SessionState> {
   final CinemaRestClient client;
-  final int sessionId;
+  final Session session;
 
   SessionBloc(
     this.client,
-    this.sessionId,
+    this.session,
   ) : super(SessionState(
-          sessionId: sessionId,
+          sessionId: session.id,
+          session: session,
           seatsPrice: List.empty(),
           selectedSeats: List.empty(),
           totalPrice: 0.0,
@@ -40,26 +42,27 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     InitSession event,
     Emitter<SessionState> emit,
   ) async {
-    final List<Seat> seatsPrice = [];
-    for (final type in SeatType.values) {
-      final Seat seat = Seat(
-        id: type.index + 1,
-        index: type.index + 1,
-        type: type,
-        price: _getSeatPrice(
-          type,
-          event.rows,
-        ),
-        isAvailable: true,
-      );
-      if (seat.price != -1) {
-        seatsPrice.add(seat);
-      }
+    logMessage("init session");
+    try {
+      emit(state.copyWith(
+        loading: true,
+      ));
+      final session = await client.searchSession(state.sessionId);
+      logMessage(state.selectedSeats.toString());
+      emit(state.copyWith(
+        loading: false,
+        session: session,
+        seatsPrice: _generateSeatsPrice(session.room.rows),
+        selectedSeats: List.empty(),
+        booked: false,
+      ));
+    } catch (e) {
+      logWarning(e.toString());
+      emit(state.copyWith(
+        loading: false,
+        errorMessage: "Something went wrong",
+      ));
     }
-
-    emit(state.copyWith(
-      seatsPrice: seatsPrice,
-    ));
   }
 
   Future<FutureOr<void>> _onErrorShown(
@@ -88,6 +91,26 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     ));
   }
 
+  List<Seat> _generateSeatsPrice(List<SeatRow> rows) {
+    final List<Seat> seatsPrice = [];
+    for (final type in SeatType.values) {
+      final Seat seat = Seat(
+        id: type.index + 1,
+        index: type.index + 1,
+        type: type,
+        price: _getSeatPrice(
+          type,
+          rows,
+        ),
+        isAvailable: true,
+      );
+      if (seat.price != -1) {
+        seatsPrice.add(seat);
+      }
+    }
+    return seatsPrice;
+  }
+
   double _getSeatPrice(SeatType type, List<SeatRow> rows) {
     return rows
             .expand((seatRow) => seatRow.seats)
@@ -106,8 +129,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
         loading: true,
       ));
       List<int> tickets = state.selectedSeats.map((e) => e.id).toList();
-      logMessage(tickets.toString());
-      bool booked = await client.reservation(sessionId, tickets);
+      bool booked = await client.reservation(state.sessionId, tickets);
 
       if (booked) {
         emit(state.copyWith(
@@ -130,9 +152,9 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   }
 
   Future<FutureOr<void>> _onNavigationHandledEvent(
-      OnNavigationHandledEvent event,
-      Emitter<SessionState> emit,
-      ) async {
+    OnNavigationHandledEvent event,
+    Emitter<SessionState> emit,
+  ) async {
     emit(state.copyWith(
       booked: false,
     ));

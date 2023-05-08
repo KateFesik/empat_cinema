@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 class CinemaButton extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
+  final bool isDisabled;
 
   const CinemaButton({
     Key? key,
-    required this.onTap, required this.title,
+    required this.onTap,
+    required this.title,
+    required this.isDisabled,
   }) : super(key: key);
 
   @override
@@ -16,9 +19,7 @@ class CinemaButton extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () {
-            onTap();
-          },
+          onPressed: isDisabled ? null : onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 14.0),
             child: Text(
