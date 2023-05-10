@@ -3,17 +3,17 @@ part of 'schedule_bloc.dart';
 @immutable
 abstract class ScheduleEvent extends Equatable {}
 
-class InitSchedule extends ScheduleEvent {
+class ScheduleStarted extends ScheduleEvent {
   final DateTime date;
 
-  InitSchedule({
+  ScheduleStarted({
     required this.date,
   });
 
-  InitSchedule copyWith({
+  ScheduleStarted copyWith({
     DateTime? date,
   }) {
-    return InitSchedule(
+    return ScheduleStarted(
       date: date ?? this.date,
     );
   }

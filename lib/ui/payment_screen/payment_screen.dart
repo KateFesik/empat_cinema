@@ -43,7 +43,7 @@ class PaymentScreen extends StatelessWidget {
                 ..showSnackBar(SnackBar(
                   content: Text(state.errorMessage!),
                 ));
-              context.read<PaymentBloc>().add(OnErrorShown());
+              context.read<PaymentBloc>().add(PaymentErrorShown());
             }
             if (state.ordered) {
               Navigator.of(context).popUntil((route) {

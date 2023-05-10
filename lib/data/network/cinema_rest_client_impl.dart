@@ -129,8 +129,8 @@ class CinemaRestClientImpl extends CinemaRestClient {
     if (dioResponse.success()) {
       throw Exception("Request failed");
     }
-    final data = dioResponse.data!['data'];
-    return (data as List<dynamic>)
+    final dataJson = dioResponse.data!['data'];
+    return (dataJson as List<dynamic>)
         .map((jsonObject) => Movie.fromJson(jsonObject))
         .toList();
   }
@@ -150,8 +150,8 @@ class CinemaRestClientImpl extends CinemaRestClient {
     if (dioResponse.success()) {
       throw Exception("Request failed");
     }
-    final data = dioResponse.data!['data'] as List<dynamic>;
-    return data.map((e) => Session.fromJson(e)).toList();
+    final dataJson = dioResponse.data!['data'] as List<dynamic>;
+    return dataJson.map((e) => Session.fromJson(e)).toList();
   }
 
   @override
@@ -207,6 +207,20 @@ class CinemaRestClientImpl extends CinemaRestClient {
       throw Exception("Request failed");
     }
     return dioResponse.data!['data'] as bool;
+  }
+
+  @override
+  Future<List<Ticket>> getTickets() async {
+    final dioResponse = await dio.get<Map<String, dynamic>>(
+      "/api/user/tickets",
+    );
+    if (dioResponse.success()) {
+      throw Exception("Request failed");
+    }
+    final dataJson = dioResponse.data!['data'];
+    return (dataJson as List<dynamic>)
+        .map((jsonObject) => Ticket.fromJson(jsonObject))
+        .toList();
   }
 }
 

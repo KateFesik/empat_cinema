@@ -67,15 +67,6 @@ class MovieDetailsSliver extends StatelessWidget {
                             overflow: TextOverflow.fade,
                           ),
                         ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.white,
-                            size: 36.0,
-                          ),
-                          onPressed: () {},
-                        ),
                       ],
                     ),
                   ),

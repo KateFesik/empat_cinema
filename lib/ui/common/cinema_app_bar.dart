@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../account/account_screen.dart';
+import '../app_bloc/app_bloc.dart';
 
 class CinemaAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CinemaAppBar({
@@ -32,20 +34,17 @@ class CinemaAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       titleSpacing: 20.0,
       actions: [
-        IconButton(
-          icon: const Icon(
-            Icons.search,
-          ),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.account_circle_outlined,
-          ),
-          onPressed: () {
-            _openAccountScreen(context);
-          },
-        ),
+        BlocBuilder<AppBloc, AppState>(
+            builder: (BuildContext context, AppState state) {
+          return IconButton(
+            icon: const Icon(
+              Icons.account_circle_outlined,
+            ),
+            onPressed: state.authenticationType == AuthenticationType.otpLogin
+                ? () => _openAccountScreen(context)
+                : null,
+          );
+        })
       ],
     );
   }

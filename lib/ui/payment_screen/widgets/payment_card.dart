@@ -48,7 +48,7 @@ class _PaymentCardState extends State<PaymentCard> {
   }
 
   void _onOrder(BuildContext context) {
-    context.read<PaymentBloc>().add(OnOrder(
+    context.read<PaymentBloc>().add(PaymentOrdered(
           email: emailController.text,
           cardNumber: cardNumberController.text,
           expirationDate: expirationDateController.text,

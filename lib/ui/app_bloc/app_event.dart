@@ -2,12 +2,12 @@ part of 'app_bloc.dart';
 
 abstract class AppEvent extends Equatable{}
 
-class OnLoggedIn extends AppEvent {
+class AppLoggedIn extends AppEvent {
   @override
   List<Object?> get props => List.empty();
 }
 
-class OnLoggedOut extends AppEvent {
+class AppLoggedOut extends AppEvent {
   @override
   List<Object?> get props => List.empty();
 }

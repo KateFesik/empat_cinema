@@ -29,12 +29,12 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           loading: false,
           errorMessage: null,
         )) {
-    on<OnErrorShown>(_onErrorShown);
-    on<OnOrder>(_onOrder);
+    on<PaymentErrorShown>(_onPaymentErrorShown);
+    on<PaymentOrdered>(_onPaymentOrdered);
   }
 
-  Future<void> _onOrder(
-    OnOrder event,
+  Future<void> _onPaymentOrdered(
+    PaymentOrdered event,
     Emitter<PaymentState> emit,
   ) async {
     final email = event.email.replaceAll(' ', '');
@@ -93,8 +93,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     return true;
   }
 
-  Future<FutureOr<void>> _onErrorShown(
-    OnErrorShown event,
+  Future<FutureOr<void>> _onPaymentErrorShown(
+    PaymentErrorShown event,
     Emitter<PaymentState> emit,
   ) async {
     emit(state.copyWithNullError());

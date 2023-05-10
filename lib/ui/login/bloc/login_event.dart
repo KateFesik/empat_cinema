@@ -3,15 +3,15 @@ part of 'login_bloc.dart';
 @immutable
 abstract class LoginEvent extends Equatable {}
 
-class AnonymousLogin extends LoginEvent {
+class LoginAnonymousPressed extends LoginEvent {
   @override
   List<Object?> get props => List.empty();
 }
 
-class SubmitPhone extends LoginEvent {
+class LoginPhoneSubmitted extends LoginEvent {
   final String phone;
 
-  SubmitPhone({
+  LoginPhoneSubmitted({
     required this.phone,
   });
 
@@ -19,10 +19,10 @@ class SubmitPhone extends LoginEvent {
   List<Object?> get props => [phone];
 }
 
-class SubmitOtp extends LoginEvent {
+class LoginOtpSubmitted extends LoginEvent {
   final String otp;
 
-  SubmitOtp({
+  LoginOtpSubmitted({
     required this.otp,
   });
 
@@ -30,7 +30,7 @@ class SubmitOtp extends LoginEvent {
   List<Object?> get props => [otp];
 }
 
-class OnErrorShown extends LoginEvent {
+class LoginErrorShown extends LoginEvent {
   @override
   List<Object?> get props => List.empty();
 }

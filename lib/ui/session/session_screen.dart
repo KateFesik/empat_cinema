@@ -7,7 +7,6 @@ import 'package:cinema/ui/session/widgets/legend.dart';
 import 'package:cinema/ui/session/widgets/session_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lumberdash/lumberdash.dart';
 
 import '../../data/network/cinema_rest_client.dart';
 import '../../data/network/model/seat.dart';
@@ -47,7 +46,7 @@ class SessionScreen extends StatelessWidget {
         },
       ),
     );
-    context.read<SessionBloc>().add(InitSession());
+    context.read<SessionBloc>().add(SessionStarted());
   }
 
   @override
@@ -56,7 +55,7 @@ class SessionScreen extends StatelessWidget {
       create: (context) => SessionBloc(
         context.read<CinemaRestClient>(),
         session,
-      )..add(InitSession()),
+      )..add(SessionStarted()),
       child: Scaffold(
         appBar: SessionAppBar(
           title: movieName,
@@ -69,10 +68,10 @@ class SessionScreen extends StatelessWidget {
                 ..showSnackBar(SnackBar(
                   content: Text(state.errorMessage!),
                 ));
-              context.read<SessionBloc>().add(OnErrorShown());
+              context.read<SessionBloc>().add(SessionErrorShown());
             }
             if (state.booked) {
-              context.read<SessionBloc>().add(OnNavigationHandledEvent());
+              context.read<SessionBloc>().add(SessionNavigationHandled());
               _openPaymentScreen(
                 context,
                 state.selectedSeats,
@@ -101,9 +100,9 @@ class SessionScreen extends StatelessWidget {
                           onTap: (seat) {
                             context
                                 .read<SessionBloc>()
-                                .add(OnSeatSelected(seat: seat));
+                                .add(SessionSeatSelected(seat: seat));
                           }),
-                      legendWidget: LegendWidget(
+                      legendWidget: LegendButton(
                         seatsPrice: state.seatsPrice,
                       ),
                     ),
@@ -117,7 +116,7 @@ class SessionScreen extends StatelessWidget {
 
                       title: _buttonText,
                       onTap: () {
-                        context.read<SessionBloc>().add(OnBookTickets());
+                        context.read<SessionBloc>().add(SessionTicketsBooked());
                       },
                     ),
                   ),

@@ -22,12 +22,12 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
           loading: true,
           errorMessage: null,
         )) {
-    on<InitMovies>(_onInitMovies);
-    on<OnErrorShown>(_onErrorShown);
+    on<MoviesStarted>(_onMoviesStarted);
+    on<MoviesErrorShown>(_onMoviesErrorShown);
   }
 
-  Future<FutureOr<void>> _onInitMovies(
-    InitMovies event,
+  Future<FutureOr<void>> _onMoviesStarted(
+    MoviesStarted event,
     Emitter<MoviesState> emit,
   ) async {
     logMessage("init movies");
@@ -51,8 +51,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     }
   }
 
-  Future<FutureOr<void>> _onErrorShown(
-      OnErrorShown event,
+  Future<FutureOr<void>> _onMoviesErrorShown(
+      MoviesErrorShown event,
       Emitter<MoviesState> emit,
       ) async {
     emit(state.copyWith(

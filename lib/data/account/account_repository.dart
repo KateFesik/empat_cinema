@@ -5,6 +5,7 @@ import 'package:cinema/data/account/token_cache.dart';
 import 'package:cinema/data/network/cinema_rest_client.dart';
 import 'package:crypto/crypto.dart';
 
+import '../../ui/app_bloc/app_bloc.dart';
 import '../network/model/account.dart';
 
 const _secretKey = "2jukqvNnhunHWMBRRVcZ9ZQ9";
@@ -29,7 +30,8 @@ class AccountRepository {
       sessionToken,
       signature,
     );
-    await tokenCache.save(accessToken);
+    await tokenCache.saveToken(accessToken);
+    await tokenCache.saveAuthenticationType(AuthenticationType.anonymousLogin);
     _tokenStreamController.add(accessToken);
     return accessToken;
   }
@@ -38,6 +40,10 @@ class AccountRepository {
 
   AccessToken? getAccessToken() {
     return tokenCache.getToken();
+  }
+
+  AuthenticationType? getAuthenticationType() {
+    return tokenCache.getAuthenticationType();
   }
 
   void deleteAccessToken() {
@@ -62,7 +68,8 @@ class AccountRepository {
 
   Future<AccessToken> otpLogin(String phoneNumber, String otp) async {
     final accessToken = await client.otpAccessToken(phoneNumber, otp);
-    await tokenCache.save(accessToken);
+    await tokenCache.saveToken(accessToken);
+    await tokenCache.saveAuthenticationType(AuthenticationType.otpLogin);
     _tokenStreamController.add(accessToken);
     return accessToken;
   }

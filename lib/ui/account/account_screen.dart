@@ -32,7 +32,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   void _onSave(BuildContext context) {
-    context.read<AccountBloc>().add(SaveName(name: nameController.text));
+    context.read<AccountBloc>().add(AccountNameSaved(name: nameController.text));
   }
 
   @override
@@ -40,7 +40,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return BlocProvider<AccountBloc>(
       create: (BuildContext context) => AccountBloc(
         context.read<AccountRepository>(),
-      )..add(InitAccount()),
+      )..add(AccountStarted()),
       child: Scaffold(
         appBar: const AccountAppBar(),
         body: BlocConsumer<AccountBloc, AccountState>(
@@ -83,7 +83,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         _onSave(context);
                       },
                       title: buttonText,
-                      isDisabled: true,
+                      isDisabled: false,
                     ),
                   ],
                 ),

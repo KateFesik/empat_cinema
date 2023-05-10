@@ -3,10 +3,10 @@ part of 'movies_bloc.dart';
 @immutable
 abstract class MoviesEvent extends Equatable {}
 
-class InitMovies extends MoviesEvent {
+class MoviesStarted extends MoviesEvent {
   final DateTime date;
 
-  InitMovies({
+  MoviesStarted({
     required this.date,
   });
 
@@ -14,7 +14,7 @@ class InitMovies extends MoviesEvent {
   List<Object?> get props => [date];
 }
 
-class OnErrorShown extends MoviesEvent {
+class MoviesErrorShown extends MoviesEvent {
   @override
   List<Object?> get props => List.empty();
 }

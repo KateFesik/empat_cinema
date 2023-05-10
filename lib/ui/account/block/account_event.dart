@@ -3,15 +3,15 @@ part of 'account_bloc.dart';
 @immutable
 abstract class AccountEvent extends Equatable {}
 
-class InitAccount extends AccountEvent {
+class AccountStarted extends AccountEvent {
   @override
   List<Object?> get props => List.empty();
 }
 
-class SaveName extends AccountEvent {
+class AccountNameSaved extends AccountEvent {
   final String name;
 
-  SaveName({
+  AccountNameSaved({
     required this.name,
   });
 

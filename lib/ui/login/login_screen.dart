@@ -33,11 +33,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onSubmitPhone(BuildContext context) {
-    context.read<LoginBloc>().add(SubmitPhone(phone: phoneController.text));
+    context.read<LoginBloc>().add(LoginPhoneSubmitted(phone: phoneController.text));
   }
 
   void _onSubmitOtp(BuildContext context) {
-    context.read<LoginBloc>().add(SubmitOtp(otp: otpController.text));
+    context.read<LoginBloc>().add(LoginOtpSubmitted(otp: otpController.text));
   }
 
   @override
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ..showSnackBar(SnackBar(
                 content: Text(state.errorMessage!),
               ));
-            context.read<LoginBloc>().add(OnErrorShown());
+            context.read<LoginBloc>().add(LoginErrorShown());
           }
         },
         builder: (BuildContext context, LoginState state) {
@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          context.read<LoginBloc>().add(AnonymousLogin());
+                          context.read<LoginBloc>().add(LoginAnonymousPressed());
                         },
                         child: const Text(_anonymous),
                       ),

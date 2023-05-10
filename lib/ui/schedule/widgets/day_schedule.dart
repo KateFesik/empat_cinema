@@ -3,7 +3,6 @@ import 'package:cinema/ui/schedule/widgets/schedule_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:lumberdash/lumberdash.dart';
 
 import '../../session/session_screen.dart';
 import '../bloc/schedule_bloc.dart';
@@ -36,7 +35,7 @@ class DaySchedule extends StatelessWidget {
         },
       ),
     );
-    context.read<ScheduleBloc>().add(InitSchedule(
+    context.read<ScheduleBloc>().add(ScheduleStarted(
           date: session.date,
         ));
   }

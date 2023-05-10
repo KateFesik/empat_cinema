@@ -3,23 +3,23 @@ part of 'payment_bloc.dart';
 @immutable
 abstract class PaymentEvent extends Equatable {}
 
-class InitPayment extends PaymentEvent {
+class PaymentStarted extends PaymentEvent {
   @override
   List<Object?> get props => List.empty();
 }
 
-class OnErrorShown extends PaymentEvent {
+class PaymentErrorShown extends PaymentEvent {
   @override
   List<Object?> get props => List.empty();
 }
 
-class OnOrder extends PaymentEvent {
+class PaymentOrdered extends PaymentEvent {
   final String email;
   final String cardNumber;
   final String expirationDate;
   final String cvv;
 
-  OnOrder({
+  PaymentOrdered({
     required this.email,
     required this.cardNumber,
     required this.expirationDate,

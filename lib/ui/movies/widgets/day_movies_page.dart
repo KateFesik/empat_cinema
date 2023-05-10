@@ -46,7 +46,7 @@ class _DayMoviesPageState extends State<DayMoviesPage>
       create: (context) {
         return MoviesBloc(
           context.read<CinemaRestClient>(),
-        )..add(InitMovies(date: widget.date));
+        )..add(MoviesStarted(date: widget.date));
       },
       child: Scaffold(
         body: BlocConsumer<MoviesBloc, MoviesState>(
@@ -57,7 +57,7 @@ class _DayMoviesPageState extends State<DayMoviesPage>
                 ..showSnackBar(SnackBar(
                   content: Text(state.errorMessage!),
                 ));
-              context.read<MoviesBloc>().add(OnErrorShown());
+              context.read<MoviesBloc>().add(MoviesErrorShown());
             }
           },
           builder: (BuildContext context, MoviesState state) {

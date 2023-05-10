@@ -31,14 +31,14 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
           loading: true,
           errorMessage: null,
         )) {
-    on<InitSchedule>(_onInitSchedule);
+    on<ScheduleStarted>(_onScheduleStarted);
   }
 
-  Future<FutureOr<void>> _onInitSchedule(
-    InitSchedule event,
+  Future<FutureOr<void>> _onScheduleStarted(
+    ScheduleStarted event,
     Emitter<ScheduleState> emit,
   ) async {
-    logMessage("init movies");
+    logMessage("started movies");
     try {
       emit(state.copyWith(
         loading: true,

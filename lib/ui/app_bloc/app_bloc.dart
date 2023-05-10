@@ -6,37 +6,42 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'app_event.dart';
+
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  AccountRepository accountRepository;
+  AccountRepository client;
 
-  AppBloc(this.accountRepository)
-      : super(const AppState(AuthenticationState.initial)) {
-    accountRepository.accessTokenStream().listen((accessToken) {
+  AppBloc(this.client)
+      : super(const AppState(
+          authenticationState: AuthenticationState.started,
+          authenticationType: AuthenticationType.anonymousLogin,
+        )) {
+    client.accessTokenStream().listen((accessToken) {
       if (accessToken == null) {
-        add(OnLoggedOut());
+        add(AppLoggedOut());
       } else {
-        add(OnLoggedIn());
+        add(AppLoggedIn());
       }
     });
 
-    on<OnLoggedOut>(_onLoggedOut);
-    on<OnLoggedIn>(_onLoggedIn);
+    on<AppLoggedOut>(_onAppLoggedOut);
+    on<AppLoggedIn>(_onAppLoggedIn);
   }
 
-  @override
-  void onChange(Change<AppState> change) {
-    super.onChange(change);
-   }
-
-  FutureOr<void> _onLoggedOut(OnLoggedOut event, Emitter<AppState> emit) {
-    emit(const AppState(AuthenticationState.loginRequired));
+  FutureOr<void> _onAppLoggedOut(AppLoggedOut event, Emitter<AppState> emit) {
+    final authenticationType = client.getAuthenticationType();
+    emit(AppState(
+      authenticationState: AuthenticationState.loginRequired,
+      authenticationType: authenticationType,
+    ));
   }
 
-  FutureOr<void> _onLoggedIn(OnLoggedIn event, Emitter<AppState> emit) {
-    emit(const AppState(AuthenticationState.authenticated));
+  FutureOr<void> _onAppLoggedIn(AppLoggedIn event, Emitter<AppState> emit) {
+    final authenticationType = client.getAuthenticationType();
+    emit(AppState(
+      authenticationState: AuthenticationState.authenticated,
+      authenticationType: authenticationType,
+    ));
   }
 }
-
-

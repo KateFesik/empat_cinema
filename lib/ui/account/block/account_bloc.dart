@@ -21,15 +21,15 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           loading: true,
           errorMessage: null,
         )) {
-    on<InitAccount>(_onInitAccount);
-    on<SaveName>(_onSaveName);
+    on<AccountStarted>(_onAccountStarted);
+    on<AccountNameSaved>(_onAccountNameSaved);
   }
 
-  Future<FutureOr<void>> _onInitAccount(
-    InitAccount event,
+  Future<FutureOr<void>> _onAccountStarted(
+    AccountStarted event,
     Emitter<AccountState> emit,
   ) async {
-    logMessage("init account");
+    logMessage("started account");
     try {
       emit(state.copyWith(
         loading: true,
@@ -49,8 +49,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     }
   }
 
-  Future<FutureOr<void>> _onSaveName(
-    SaveName event,
+  Future<FutureOr<void>> _onAccountNameSaved(
+    AccountNameSaved event,
     Emitter<AccountState> emit,
   ) async {
     logMessage("save name");

@@ -36,7 +36,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
           context.read<CinemaRestClient>(),
           widget.movie,
           widget.selectedDate,
-        )..add(InitSchedule(
+        )..add(ScheduleStarted(
             date: widget.selectedDate,
           ));
       },
@@ -50,7 +50,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                   selectedDate: state.selectedDate,
                   dates: state.dates,
                   onClick: (date) {
-                    context.read<ScheduleBloc>().add(InitSchedule(date: date));
+                    context.read<ScheduleBloc>().add(ScheduleStarted(date: date));
                   },
                 ),
                 DaySchedule(

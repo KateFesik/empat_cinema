@@ -21,7 +21,7 @@ class CinemaApp extends StatelessWidget {
               return CinemaRoot(key: rootKey);
             case AuthenticationState.loginRequired:
               return const LoginScreen();
-            case AuthenticationState.initial:
+            case AuthenticationState.started:
               return const SplashScreen();
           }
         },

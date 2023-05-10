@@ -24,14 +24,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           errorMessage: null,
           isOtpSent: false,
         )) {
-    on<AnonymousLogin>(_onAnonymousLogin);
-    on<SubmitPhone>(_onSubmitPhone);
-    on<SubmitOtp>(_onSubmitOtp);
-    on<OnErrorShown>(_onErrorShown);
+    on<LoginAnonymousPressed>(_onLoginAnonymousPressed);
+    on<LoginPhoneSubmitted>(_onLoginPhoneSubmitted);
+    on<LoginOtpSubmitted>(_onLoginOtpSubmitted);
+    on<LoginErrorShown>(_onLoginErrorShown);
   }
 
-  Future<FutureOr<void>> _onAnonymousLogin(
-    AnonymousLogin event,
+  Future<FutureOr<void>> _onLoginAnonymousPressed(
+    LoginAnonymousPressed event,
     Emitter<LoginState> emit,
   ) async {
     try {
@@ -48,8 +48,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<FutureOr<void>> _onSubmitPhone(
-    SubmitPhone event,
+  Future<FutureOr<void>> _onLoginPhoneSubmitted(
+    LoginPhoneSubmitted event,
     Emitter<LoginState> emit,
   ) async {
     try {
@@ -71,8 +71,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<FutureOr<void>> _onSubmitOtp(
-    SubmitOtp event,
+  Future<FutureOr<void>> _onLoginOtpSubmitted(
+    LoginOtpSubmitted event,
     Emitter<LoginState> emit,
   ) async {
     try {
@@ -89,8 +89,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<FutureOr<void>> _onErrorShown(
-      OnErrorShown event,
+  Future<FutureOr<void>> _onLoginErrorShown(
+      LoginErrorShown event,
       Emitter<LoginState> emit,
       ) async {
     emit(state.copyWith(

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'model/movie.dart';
+import 'model/ticket.dart';
 
 part 'cinema_rest_client_impl.dart';
 
@@ -64,4 +65,7 @@ abstract class CinemaRestClient {
       String expirationDate,
       String cvv,
   );
+
+  //tickets
+Future<List<Ticket>> getTickets();
 }

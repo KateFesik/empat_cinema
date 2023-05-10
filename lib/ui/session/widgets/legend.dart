@@ -6,10 +6,10 @@ import 'cinema_seats.dart';
 const String _legend = "LEGEND";
 const String _legendTitle = "The seats:";
 
-class LegendWidget extends StatelessWidget {
+class LegendButton extends StatelessWidget {
   final List<Seat> seatsPrice;
 
-  const LegendWidget({
+  const LegendButton({
     super.key,
     required this.seatsPrice,
   });
@@ -24,7 +24,7 @@ class LegendWidget extends StatelessWidget {
           builder: (BuildContext context) =>
               LegendAlertDialog(seatsPrice: seatsPrice),
         ),
-        child: const LegendButton(),
+        child: const LegendButtonContent(),
       ),
     );
   }
@@ -43,11 +43,6 @@ class LegendAlertDialog extends StatelessWidget {
     return AlertDialog(
       title: const Text(_legendTitle),
       content: Table(
-        // defaultColumnWidth: const IntrinsicColumnWidth(),
-        // columnWidths: const {
-        //   0: FixedColumnWidth(46),
-        //   1: FlexColumnWidth(),
-        // },
         columnWidths: const {
           0: IntrinsicColumnWidth(),
           1: FlexColumnWidth(10),
@@ -89,8 +84,8 @@ class LegendAlertDialog extends StatelessWidget {
   }
 }
 
-class LegendButton extends StatelessWidget {
-  const LegendButton({Key? key}) : super(key: key);
+class LegendButtonContent extends StatelessWidget {
+  const LegendButtonContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

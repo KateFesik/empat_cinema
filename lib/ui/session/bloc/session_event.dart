@@ -3,17 +3,16 @@ part of 'session_bloc.dart';
 @immutable
 abstract class SessionEvent extends Equatable {}
 
-class InitSession extends SessionEvent {
-
+class SessionStarted extends SessionEvent {
 
   @override
   List<Object?> get props => List.empty();
 }
 
-class OnSeatSelected extends SessionEvent {
+class SessionSeatSelected extends SessionEvent {
   final Seat seat;
 
-  OnSeatSelected({
+  SessionSeatSelected({
     required this.seat,
   });
 
@@ -23,17 +22,17 @@ class OnSeatSelected extends SessionEvent {
       ];
 }
 
-class OnBookTickets extends SessionEvent {
+class SessionTicketsBooked extends SessionEvent {
   @override
   List<Object?> get props => List.empty();
 }
 
-class OnErrorShown extends SessionEvent {
+class SessionErrorShown extends SessionEvent {
   @override
   List<Object?> get props => List.empty();
 }
 
-class OnNavigationHandledEvent extends SessionEvent {
+class SessionNavigationHandled extends SessionEvent {
   @override
   List<Object?> get props => List.empty();
 }

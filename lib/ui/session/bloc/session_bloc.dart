@@ -31,24 +31,23 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
           loading: false,
           errorMessage: null,
         )) {
-    on<InitSession>(_onInitSession);
-    on<OnErrorShown>(_onErrorShown);
-    on<OnSeatSelected>(_onSeatSelected);
-    on<OnBookTickets>(_onBookTickets);
-    on<OnNavigationHandledEvent>(_onNavigationHandledEvent);
+    on<SessionStarted>(_onSessionStarted);
+    on<SessionErrorShown>(_onSessionErrorShown);
+    on<SessionSeatSelected>(_onSessionSeatSelected);
+    on<SessionTicketsBooked>(_onSessionTicketsBooked);
+    on<SessionNavigationHandled>(_onSessionNavigationHandled);
   }
 
-  Future<FutureOr<void>> _onInitSession(
-    InitSession event,
+  Future<FutureOr<void>> _onSessionStarted(
+    SessionStarted event,
     Emitter<SessionState> emit,
   ) async {
-    logMessage("init session");
+    logMessage("started session");
     try {
       emit(state.copyWith(
         loading: true,
       ));
       final session = await client.searchSession(state.sessionId);
-      logMessage(state.selectedSeats.toString());
       emit(state.copyWith(
         loading: false,
         session: session,
@@ -65,8 +64,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     }
   }
 
-  Future<FutureOr<void>> _onErrorShown(
-    OnErrorShown event,
+  Future<FutureOr<void>> _onSessionErrorShown(
+    SessionErrorShown event,
     Emitter<SessionState> emit,
   ) async {
     emit(state.copyWith(
@@ -74,8 +73,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     ));
   }
 
-  Future<FutureOr<void>> _onSeatSelected(
-    OnSeatSelected event,
+  Future<FutureOr<void>> _onSessionSeatSelected(
+    SessionSeatSelected event,
     Emitter<SessionState> emit,
   ) async {
     final selectedSeats = List.of(state.selectedSeats);
@@ -119,8 +118,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
         -1;
   }
 
-  Future<FutureOr<void>> _onBookTickets(
-    OnBookTickets event,
+  Future<FutureOr<void>> _onSessionTicketsBooked(
+    SessionTicketsBooked event,
     Emitter<SessionState> emit,
   ) async {
     logMessage("book tickets");
@@ -151,8 +150,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     }
   }
 
-  Future<FutureOr<void>> _onNavigationHandledEvent(
-    OnNavigationHandledEvent event,
+  Future<FutureOr<void>> _onSessionNavigationHandled(
+    SessionNavigationHandled event,
     Emitter<SessionState> emit,
   ) async {
     emit(state.copyWith(
