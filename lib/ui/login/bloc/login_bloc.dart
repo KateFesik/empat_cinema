@@ -12,11 +12,9 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final TokenCache tokenCache;
   final AccountRepository repository;
 
   LoginBloc(
-    this.tokenCache,
     this.repository,
   ) : super(const LoginState(
           phone: null,

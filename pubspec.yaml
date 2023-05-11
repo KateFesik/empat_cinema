@@ -25,13 +25,10 @@ dependencies:
   # logger
   lumberdash: ^3.0.0
   print_lumberdash: ^3.0.0
-
   intl: ^0.18.1
-
-  configurable_expansion_tile_null_safety: ^3.1.1
   cupertino_icons: ^1.0.2
   youtube_player_flutter: ^8.1.2
-  collection:
+  collection: ^1.17.0
 
 dev_dependencies:
   flutter_test:

@@ -10,14 +10,14 @@ part 'app_event.dart';
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  AccountRepository client;
+  AccountRepository repository;
 
-  AppBloc(this.client)
+  AppBloc(this.repository)
       : super(const AppState(
           authenticationState: AuthenticationState.started,
           authenticationType: AuthenticationType.anonymousLogin,
         )) {
-    client.accessTokenStream().listen((accessToken) {
+    repository.accessTokenStream().listen((accessToken) {
       if (accessToken == null) {
         add(AppLoggedOut());
       } else {
@@ -30,7 +30,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   FutureOr<void> _onAppLoggedOut(AppLoggedOut event, Emitter<AppState> emit) {
-    final authenticationType = client.getAuthenticationType();
+    final authenticationType = repository.getAuthenticationType();
     emit(AppState(
       authenticationState: AuthenticationState.loginRequired,
       authenticationType: authenticationType,
@@ -38,7 +38,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   FutureOr<void> _onAppLoggedIn(AppLoggedIn event, Emitter<AppState> emit) {
-    final authenticationType = client.getAuthenticationType();
+    final authenticationType = repository.getAuthenticationType();
     emit(AppState(
       authenticationState: AuthenticationState.authenticated,
       authenticationType: authenticationType,
